@@ -1,5 +1,7 @@
 @import 'variables';
 
+@import url('https://fonts.googleapis.com/css2?family=Butcherman&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,16 +10,16 @@ html {
   font-size: 1rem;
 }
 
-html,
-body,
-#app {
+html, body, #app {
   height: 100%;
   margin: 0;
+  padding: 0;
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Butcherman';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
+

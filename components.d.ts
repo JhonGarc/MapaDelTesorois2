@@ -7,14 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    BackGround: typeof import('./src/components/BackGround.vue')['default']
+    GoogleMaps: typeof import('./src/components/GoogleMaps.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    IAkarIconsCalculator: typeof import('~icons/akar-icons/calculator')['default']
-    'IBi:dashCircle': typeof import('~icons/bi/dash-circle')['default']
-    IBiMoonFill: typeof import('~icons/bi/moon-fill')['default']
-    IBiSunFill: typeof import('~icons/bi/sun-fill')['default']
-    IGgAdd: typeof import('~icons/gg/add')['default']
-    'IZondicons:minusOutline': typeof import('~icons/zondicons/minus-outline')['default']
     LanguageSwitcher: typeof import('./src/components/utils/LanguageSwitcher.vue')['default']
+    Puntos: typeof import('./src/components/Puntos.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ToggleDark: typeof import('./src/components/utils/ToggleDark.vue')['default']

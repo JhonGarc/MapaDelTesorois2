@@ -1,0 +1,1 @@
+export * from './Puntosxy/PuntosXY.interface'
