@@ -88,8 +88,6 @@ async function getPuntos() {
   querySnap.forEach((doc) => {
     puntosxy.value.push(doc.data() as PuntoXy)
   })
-  latitud.value = parseFloat(puntosxy.value[0].latitud)
-  longitud.value = parseFloat(puntosxy.value[0].longitud)
 
   let indices = ref<number[]>([])
   while (indices.value.length < 4) {
@@ -124,7 +122,14 @@ const center = computed(() => {
 })
 
 function ubicacion() {
-  console.log("tu ubicacion es: ")
+
+  const ubicaciones = [
+    { lat:4.124108489012096,lng:-73.6215742713069 },
+    { lat:4.124108489012096,lng:-73.6215742713069 }
+  ]
+
+  console.log(ubicaciones)
+ 
 }
 </script>
 
@@ -169,7 +174,7 @@ function ubicacion() {
       <Button>0/4</Button>
     </div>
     <GoogleMap
-      api-key="AIzaSyBhDknILN83Fc8eLama7Wr0ihN6nQUU-Aw"
+      api-key="tukey"
       style="width: 100%; height: 500px"
       :center="center"
       :zoom="7.4"
