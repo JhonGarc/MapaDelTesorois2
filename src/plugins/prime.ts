@@ -16,12 +16,14 @@ import InputText from 'primevue/inputtext'
 import Image from 'primevue/image';
 import InputNumber from 'primevue/inputnumber';
 import Password from 'primevue/password';
+import Dialog from 'primevue/dialog';
+import Galleria from 'primevue/galleria';
 const options: PrimeVueConfiguration = {
   unstyled: true,
   pt: Tailwind,
 }
 
-const components = [Button, Dropdown, InputText, Chip, Image,InputNumber,Password]
+const components = [Button, Dropdown, InputText, Chip, Image,InputNumber,Password, Dialog,Galleria,Image]
 
 export default function (app: App) {
   app.use(PrimeVue, options)
