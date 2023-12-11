@@ -96,12 +96,13 @@ async function getPuntos() {
       indices.value.push(indicesA)
     }
   }
-
+  
   indices.value.forEach((element) => console.log(element))
 
   for (let i = 0; i < 4; i++) {
     puntosF.value.push(puntosxy.value[indices.value[i]])
   }
+  
 
   // Actualizar locations después de que puntosF.value se haya llenado
   locations.value = [
@@ -122,16 +123,26 @@ const center = computed(() => {
 })
 
 function ubicacion() {
+  const ubicacioness = [
+    { nombre: "punto 1", latitud: "4.124108489012096", longitud: "-73.6215742713069" },
+    { nombre: "punto 2", latitud: "4.124108489012096", longitud: "-73.6215742713069" },
+    { nombre: "punto 3", latitud: "4.124108489012096", longitud: "-73.6215742713069" },
+    { nombre: puntosF.value[0]?.nombre?.toString(), latitud: puntosF.value[0]?.latitud?.toString(), longitud: puntosF.value[0]?.longitud?.toString() },
+    { nombre: puntosF.value[1]?.nombre?.toString(), latitud: puntosF.value[1]?.latitud?.toString(), longitud: puntosF.value[1]?.longitud?.toString() },
+    { nombre: puntosF.value[2]?.nombre?.toString(), latitud: puntosF.value[2]?.latitud?.toString(), longitud: puntosF.value[2]?.longitud?.toString() },
+    { nombre: puntosF.value[3]?.nombre?.toString(), latitud: puntosF.value[3]?.latitud?.toString(), longitud: puntosF.value[3]?.longitud?.toString() },
+  ];
 
-  const ubicaciones = [
-    { lat:4.124108489012096,lng:-73.6215742713069 },
-    { lat:4.124108489012096,lng:-73.6215742713069 }
-  ]
+  let punto = Math.floor(Math.random() * (ubicacioness.length - 1 - 0 + 1)) + 0;
 
-  console.log(ubicaciones)
- 
+  if (puntosF.value.some(item => item.nombre === ubicacioness[punto].nombre && item.latitud === ubicacioness[punto].latitud && item.longitud === ubicacioness[punto].longitud)) {
+    alert("Felicidades has llegado a tu destino, estas en " + ubicacioness[punto].nombre)
+    
+  } else {
+    console.log("El punto " + ubicacioness[punto].nombre + " no está dentro del array");
+  }
 }
-</script>
+</script> 
 
 <template>
   <body
@@ -174,7 +185,7 @@ function ubicacion() {
       <Button>0/4</Button>
     </div>
     <GoogleMap
-      api-key="tukey"
+      api-key="AIzaSyBhDknILN83Fc8eLama7Wr0ihN6nQUU-Aw"
       style="width: 100%; height: 500px"
       :center="center"
       :zoom="7.4"
