@@ -3,7 +3,7 @@ import { ref, onMounted,watch, computed } from 'vue'
 import { getStorage, ref as storageRef, listAll, getDownloadURL, Reference } from 'firebase/storage'
 import { useRouter } from 'vue-router'
 const router = useRouter()
-
+const visible = ref(false);
 const { clave, acertijo } = defineProps(['clave', 'acertijo']);
 const storage = getStorage()
 const imagesRef = storageRef(storage, '/') // Ruta del directorio donde se encuentran las imágenes
@@ -74,15 +74,21 @@ const verificarPalabra = () => {
     </section>
     
     <div class="bg-[#b9a999] w-full sm:w-4/5 md:w-3/5 lg:w-2/5 mx-7 p-4 rounded-xl backdrop-blur-md bg-opacity-50">
-      <p class="text-3xl  md:text-4xl lg:text-5xl font-bold mb-4">Resuelve el acertijo</p>
+      <p class="text-3xl  md:text-4xl lg:text-5xl font-bold mb-4">Resuelve  el  acertijo</p>
       <p class="text-base font-sans sm:text-lg md:text-base lg:text-lg mb-4">{{ riddle.riddle }}</p>
       <InputText ref="inputPalabra" class="p-inputtext-lg w-full mb-4" type="text" placeholder="Digita aquí" v-model="dataAcertijo.clave"/>
   <div class="card flex justify-center my-4">
     <button class="bg-[#ead297] w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 rounded-lg text-3xl text-black" @click="verificarPalabra">
       {{ $t('Verificar') }}
     </button>
-  </div>
-      <p class="text-base sm:text-lg mb-4">¿Necesitas ayuda?</p>
+  </div> 
+  <Button label="¿Necesitas ayuda?"  class="font-sans my-1" @click="visible = true" />
+
+<Dialog class="bg-[#ccba8d]" v-model:visible="visible" modal header="PISTA" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <p>
+       {{ riddle.pista }}
+    </p>
+</Dialog>
       <div class="bg-[#585858] p-4 rounded-xl">
         <p class="text-white text-lg mb-2">¡Puedes visitar estos lugares!</p>
         <div class="card my-2 mx-2">

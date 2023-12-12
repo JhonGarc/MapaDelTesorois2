@@ -4,4 +4,5 @@ export interface PuntoXy {
     longitud: string
     clave: string
     acertijo: string
+    pista: string
   }

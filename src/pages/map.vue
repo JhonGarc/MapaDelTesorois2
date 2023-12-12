@@ -81,15 +81,16 @@ const center = computed(() => {
 
 function ubicacion() {
   const ubicacioness = [
-    { nombre: 'punto 1', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' },
-    { nombre: 'punto 2', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' },
-    { nombre: 'punto 3', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' },
+    { nombre: 'punto 1', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' , pista:'' },
+    { nombre: 'punto 2', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '', pista:''},
+    { nombre: 'punto 3', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' , pista:''},
     {
       nombre: puntosF.value[0]?.nombre?.toString(),
       latitud: puntosF.value[0]?.latitud?.toString(),
       longitud: puntosF.value[0]?.longitud?.toString(),
       acertijo: puntosF.value[0].acertijo,
       clave: puntosF.value[0].clave,
+      pista: puntosF.value[0].pista,
     },
     {
       nombre: puntosF.value[1]?.nombre?.toString(),
@@ -97,6 +98,7 @@ function ubicacion() {
       longitud: puntosF.value[1]?.longitud?.toString(),
       acertijo: puntosF.value[1].acertijo,
       clave: puntosF.value[1].clave,
+      pista: puntosF.value[1].pista,
     },
     {
       nombre: puntosF.value[2]?.nombre?.toString(),
@@ -104,6 +106,7 @@ function ubicacion() {
       longitud: puntosF.value[2]?.longitud?.toString(),
       acertijo: puntosF.value[2].acertijo,
       clave: puntosF.value[2].clave,
+      pista: puntosF.value[2].pista,
     },
     {
       nombre: puntosF.value[3]?.nombre?.toString(),
@@ -111,6 +114,7 @@ function ubicacion() {
       longitud: puntosF.value[3]?.longitud?.toString(),
       acertijo: puntosF.value[3].acertijo,
       clave: puntosF.value[3].clave,
+      pista: puntosF.value[3].pista,
     },
   ]
 
@@ -128,21 +132,26 @@ function ubicacion() {
     const riddle = {
       key: ubicacioness[punto].clave,
       riddle: ubicacioness[punto].acertijo,
+      pista: ubicacioness[punto].pista
     }
     puntosF.value = puntosF.value.filter(item => item.nombre !== ubicacioness[punto].nombre);
 
     // // Actualizar locations después de eliminar el punto
-    locations.value = puntosF.value.map(item => ({ lat: parseFloat(item.latitud), lng: parseFloat(item.longitud) }));
-    localStorage.setItem('currentRiddle', JSON.stringify(riddle))
+    
+    
     router.push({ name: 'acertijo' })
     //console.log(ubicacioness[punto].acertijo);
-    
+    localStorage.setItem('currentRiddle', JSON.stringify(riddle))
+    locations.value = puntosF.value.map(item => ({ lat: parseFloat(item.latitud), lng: parseFloat(item.longitud) }));
 
-    
+    console.log("hola" , contador.value);
   } else {
     alert('Todavia no has llegado a tu destino')
   }
+
+
 }
+
 </script>
 
 <template>
@@ -183,7 +192,6 @@ function ubicacion() {
         <Button label="No" icon="pi pi-times" @click="hideLogoutDialog" autofocus />
       </template>
     </Dialog>
-    <button>{{ contador }}</button>
   </body>
 </template>
 
