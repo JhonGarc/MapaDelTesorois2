@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,watch, computed } from 'vue'
 import { getStorage, ref as storageRef, listAll, getDownloadURL, Reference } from 'firebase/storage'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
+const { clave, acertijo } = defineProps(['clave', 'acertijo']);
 const storage = getStorage()
 const imagesRef = storageRef(storage, '/') // Ruta del directorio donde se encuentran las imágenes
-
+console.log("riddle: " , localStorage.getItem("currentRiddle"))
+const riddle = JSON.parse(localStorage.getItem("currentRiddle") || "")
+const inputPalabra = ref('');
 let imageUrls = ref<string[]>([])
 const responsiveOptions = ref([
   {
@@ -37,48 +42,62 @@ async function fetchImages() {
 onMounted(() => {
   fetchImages()
 })
+
+watch(acertijo, async (newAcertijo, oldQuestion) => {
+  console.log(newAcertijo)
+})
+
+
+const dataAcertijo = ref({
+  clave: '',
+  key: riddle.key,
+});
+
+
+
+const verificarPalabra = () => {
+  if(dataAcertijo.value.clave === dataAcertijo.value.key){
+    alert("Haz completado el reto")
+    router.push({ name: 'map' });
+  }else{
+    alert("No es la palabra correcta")
+  }
+};
 </script>
 
 <template>
-  <body
-    class="fixed flex flex-col justify-center top-0 left-0 w-full h-[100vh] bg-cover bg-center overflow-hidden px-10 py-10"
-    style="background-image: url('/src/assets/images/bg.jpg')"
-  >
-    <section class="flex absolute top-2 left-5 justify-center align-center">
-      <router-link class="bg-black rounded-xl w-20 p-1" :to="{ name: 'index' }"
-        ><i class="pi pi-chevron-left" style="color: aliceblue"></i
-      ></router-link>
+  <div class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('/src/assets/images/bg.jpg')">
+    <section class="absolute top-2 left-5">
+      <router-link class="bg-black rounded-xl w-20 p-1" :to="{ name: 'map' }">
+        <i class="pi pi-chevron-left text-white"></i>
+      </router-link>
     </section>
-    <div class="bg-[#b9a999] w-full flex flex-wrap p-4 h-[100vh] mx-2">
-      <div class="bg-red-100 w-4/5 mx-7">
-        <p>Resuelve el acertijo</p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia voluptatum voluptatem natus ad quam a
-          inventore eum velit numquam quae? Nam voluptatum maxime rerum blanditiis quaerat amet similique! Voluptatum,
-          magni.
-        </p>
-        <InputText type="text" placeholder="Digita aquí" />
-        <InputText type="text" placeholder="Digita aquí" />
-        <div class="card flex justify-content-center">
-          <Button label="Submit" />
-        </div>
-        <p>¿Necesitas ayuda?</p>
-        <div class="bg-[#585858]">
-          <p class="text-white">¡Puedes visitar estos lugares!</p>
-          <div class="card my-2 mx-2">
-            <Galleria
-              :value="imageUrls"
-              :responsiveOptions="responsiveOptions"
-              :numVisible="5"
-              containerStyle="max-width: 640px"
-            >
-              <template #item="slotProps">
-                <img :src="slotProps.item" alt="Imagen" style="width: 100%; height: 300px; object-fit: cover" />
-              </template>
-            </Galleria>
-          </div>
+    
+    <div class="bg-[#b9a999] w-full sm:w-4/5 md:w-3/5 lg:w-2/5 mx-7 p-4 rounded-xl backdrop-blur-md bg-opacity-50">
+      <p class="text-3xl  md:text-4xl lg:text-5xl font-bold mb-4">Resuelve el acertijo</p>
+      <p class="text-base font-sans sm:text-lg md:text-base lg:text-lg mb-4">{{ riddle.riddle }}</p>
+      <InputText ref="inputPalabra" class="p-inputtext-lg w-full mb-4" type="text" placeholder="Digita aquí" v-model="dataAcertijo.clave"/>
+  <div class="card flex justify-center my-4">
+    <button class="bg-[#ead297] w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 rounded-lg text-3xl text-black" @click="verificarPalabra">
+      {{ $t('Verificar') }}
+    </button>
+  </div>
+      <p class="text-base sm:text-lg mb-4">¿Necesitas ayuda?</p>
+      <div class="bg-[#585858] p-4 rounded-xl">
+        <p class="text-white text-lg mb-2">¡Puedes visitar estos lugares!</p>
+        <div class="card my-2 mx-2">
+          <Galleria
+            :value="imageUrls"
+            :responsiveOptions="responsiveOptions"
+            :numVisible="5"
+            containerStyle="max-width: 740px"
+          >
+            <template #item="slotProps">
+              <img :src="slotProps.item" alt="Imagen" class="w-full h-48 object-cover rounded" />
+            </template>
+          </Galleria>
         </div>
       </div>
     </div>
-  </body>
-</template>
+  </div>
+</template> 

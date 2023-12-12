@@ -1,82 +1,40 @@
-<!-- <template>
-  <GoogleMap api-key="YOUR_GOOGLE_MAPS_API_KEY" style="width: 100%; height: 500px" :center="center" :zoom="13">
-    <CustomControl position="BOTTOM_CENTER">
-      <button class="custom-btn" @click="sayHi">👋</button>
-    </CustomControl>
-  </GoogleMap>
-</template>
-
-<script setup lang="ts">
-import { defineComponent } from "vue";
-import { GoogleMap, CustomControl } from "vue3-google-map";
-
-
-
-    const center = { lat: 35, lng: -95 };
-    const sayHi = () => alert("Hi!");
-
-
-</script>
-
-<style scoped>
-.custom-btn {
-  box-sizing: border-box;
-  background: white;
-  height: 40px;
-  width: 40px;
-  border-radius: 2px;
-  border: 0px;
-  margin: 10px;
-  padding: 0px;
-  font-size: 1.25rem;
-  text-transform: none;
-  appearance: none;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-  overflow: hidden;
-}
-</style> -->
-
 <script setup lang="ts">
 import { GoogleMap, Marker } from 'vue3-google-map'
 import { db } from '@/services/firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { onMounted, ref, computed } from 'vue'
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut } from 'firebase/auth'
 import { PuntoXy } from '@/typings'
+import { useRouter } from 'vue-router'
+const logoutDialogVisible = ref(false);
 
+function showLogoutDialog() {
+  logoutDialogVisible.value = true;
+}
+
+function hideLogoutDialog() {
+  logoutDialogVisible.value = false;
+}
+
+function logout() {
+  // Lógica para cerrar sesión
+  hideLogoutDialog();
+  router.push({ name: 'index' });
+}
+
+const router = useRouter()
 const puntosxy = ref<PuntoXy[]>([])
 const puntosF = ref<PuntoXy[]>([])
 const locations = ref<{ lat: number; lng: number }[]>([]) // Mover la declaración aquí
 
-const latitud = ref(0)
+const contador = ref(0)
 const longitud = ref(0)
 const position = ref('center')
 const visible = ref(false)
-const auth = getAuth();
-
-
-
-
-
-
-
-
+const auth = getAuth()
 const openPosition = (pos) => {
   position.value = pos
-  visible.value = true 
-}
-
-
-function cerrarSesion(){
-
-    signOut(auth).then(() => {
-  alert("sesionCerrada")
-}).catch((error) => {
-  // An error happened.
-});
-  
+  visible.value = true
 }
 
 
@@ -96,13 +54,12 @@ async function getPuntos() {
       indices.value.push(indicesA)
     }
   }
-  
+
   indices.value.forEach((element) => console.log(element))
 
   for (let i = 0; i < 4; i++) {
     puntosF.value.push(puntosxy.value[indices.value[i]])
   }
-  
 
   // Actualizar locations después de que puntosF.value se haya llenado
   locations.value = [
@@ -124,76 +81,110 @@ const center = computed(() => {
 
 function ubicacion() {
   const ubicacioness = [
-    { nombre: "punto 1", latitud: "4.124108489012096", longitud: "-73.6215742713069" },
-    { nombre: "punto 2", latitud: "4.124108489012096", longitud: "-73.6215742713069" },
-    { nombre: "punto 3", latitud: "4.124108489012096", longitud: "-73.6215742713069" },
-    { nombre: puntosF.value[0]?.nombre?.toString(), latitud: puntosF.value[0]?.latitud?.toString(), longitud: puntosF.value[0]?.longitud?.toString() },
-    { nombre: puntosF.value[1]?.nombre?.toString(), latitud: puntosF.value[1]?.latitud?.toString(), longitud: puntosF.value[1]?.longitud?.toString() },
-    { nombre: puntosF.value[2]?.nombre?.toString(), latitud: puntosF.value[2]?.latitud?.toString(), longitud: puntosF.value[2]?.longitud?.toString() },
-    { nombre: puntosF.value[3]?.nombre?.toString(), latitud: puntosF.value[3]?.latitud?.toString(), longitud: puntosF.value[3]?.longitud?.toString() },
-  ];
+    { nombre: 'punto 1', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' },
+    { nombre: 'punto 2', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' },
+    { nombre: 'punto 3', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' },
+    {
+      nombre: puntosF.value[0]?.nombre?.toString(),
+      latitud: puntosF.value[0]?.latitud?.toString(),
+      longitud: puntosF.value[0]?.longitud?.toString(),
+      acertijo: puntosF.value[0].acertijo,
+      clave: puntosF.value[0].clave,
+    },
+    {
+      nombre: puntosF.value[1]?.nombre?.toString(),
+      latitud: puntosF.value[1]?.latitud?.toString(),
+      longitud: puntosF.value[1]?.longitud?.toString(),
+      acertijo: puntosF.value[1].acertijo,
+      clave: puntosF.value[1].clave,
+    },
+    {
+      nombre: puntosF.value[2]?.nombre?.toString(),
+      latitud: puntosF.value[2]?.latitud?.toString(),
+      longitud: puntosF.value[2]?.longitud?.toString(),
+      acertijo: puntosF.value[2].acertijo,
+      clave: puntosF.value[2].clave,
+    },
+    {
+      nombre: puntosF.value[3]?.nombre?.toString(),
+      latitud: puntosF.value[3]?.latitud?.toString(),
+      longitud: puntosF.value[3]?.longitud?.toString(),
+      acertijo: puntosF.value[3].acertijo,
+      clave: puntosF.value[3].clave,
+    },
+  ]
 
-  let punto = Math.floor(Math.random() * (ubicacioness.length - 1 - 0 + 1)) + 0;
+  let punto = Math.floor(Math.random() * (ubicacioness.length - 1 - 0 + 1)) + 0
 
-  if (puntosF.value.some(item => item.nombre === ubicacioness[punto].nombre && item.latitud === ubicacioness[punto].latitud && item.longitud === ubicacioness[punto].longitud)) {
-    alert("Felicidades has llegado a tu destino, estas en " + ubicacioness[punto].nombre)
+  if (
+    puntosF.value.some(
+      (item) =>
+        item.nombre === ubicacioness[punto].nombre &&
+        item.latitud === ubicacioness[punto].latitud &&
+        item.longitud === ubicacioness[punto].longitud,
+    )
+  ) {
+    alert('Felicidades has llegado a tu destino, estas en ' + ubicacioness[punto].nombre)
+    const riddle = {
+      key: ubicacioness[punto].clave,
+      riddle: ubicacioness[punto].acertijo,
+    }
+    puntosF.value = puntosF.value.filter(item => item.nombre !== ubicacioness[punto].nombre);
+
+    // // Actualizar locations después de eliminar el punto
+    locations.value = puntosF.value.map(item => ({ lat: parseFloat(item.latitud), lng: parseFloat(item.longitud) }));
+    localStorage.setItem('currentRiddle', JSON.stringify(riddle))
+    router.push({ name: 'acertijo' })
+    //console.log(ubicacioness[punto].acertijo);
+    
+
     
   } else {
-    console.log("El punto " + ubicacioness[punto].nombre + " no está dentro del array");
+    alert('Todavia no has llegado a tu destino')
   }
 }
-</script> 
+</script>
 
 <template>
-  <body
-    class="fixed top-0 left-0 w-full h-full bg-cover bg-center"
-    style="background-image: url('/src/assets/images/bg.jpg')"
-  >
-    <section class="h-1/5 flex">
-      <router-link class="bg-black rounded-lg h-1/3 w-20 my-10 mx-5" :to="{ name: 'index' }">
-        <i class="pi pi-chevron-left mt-4" style="color: aliceblue"></i>
+  <body class="fixed top-0 left-0 w-full h-full bg-cover bg-center" style="background-image: url('/src/assets/images/bg.jpg')">
+    <section class="sm:h-1/5 flex">
+      <router-link class="bg-black rounded-lg h-1/3 w-20 my-2 mx-2 sm:my-10 sm:mx-5" :to="{ name: 'index' }">
+        <i class="pi pi-chevron-left mt-2 sm:mt-4" style="color: aliceblue"></i>
       </router-link>
     </section>
-    <div class="flex flex-wrap justify-content-center gap-2 mb-2">
-      <Button
-        label="Left"
-        icon="pi pi-arrow-right"
-        @click="openPosition('left')"
-        severity="help"
-        style="min-width: 10rem"
-      />
+    <div class="mx-auto w-full sm:w-1/2 mt-5 sm:mt-10 mb-5 border-4 border-black rounded-lg relative h-850" style="width: 90%; max-width: 600px; height: 650px;">
+      <GoogleMap
+        api-key="AIzaSyBhDknILN83Fc8eLama7Wr0ihN6nQUU-Aw"
+        :center="center"
+        :zoom="7.4"
+        style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"
+      >
+        <Marker v-for="(location, i) in locations" :options="{ position: location }" :key="i" />
+      </GoogleMap>
+      <button @click="ubicacion" class="bg-[#ccba8d] rounded-lg text-lg sm:text-3xl text-black p-2 absolute bottom-5 left-5 w-32 sm:w-57 md:w-68 lg:w-83 xl:w-60">
+        {{ $t('Verificar ubicación') }}
+      </button>
+    </div>
+    <div class="absolute top-2 right-2 sm:top-5 sm:right-5">
+      <button @click="showLogoutDialog" class="bg-[#ccba8d] rounded-lg text-xl sm:text-3xl text-black p-2">
+        {{ $t('Cerrar sesión') }}
+      </button>
     </div>
     <Dialog
-      v-model:visible="visible"
-      header=""
-      :style="{ width: '50rem' }"
-      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
-      :position="position"
+      v-model:visible="logoutDialogVisible"
+      header="Cerrar Sesión"
+      :style="{ width: '80%', sm: '70%', md: '50%', lg: '40%', xl: '30rem' }"
       :modal="true"
       :draggable="false"
     >
-      <p class="m-0">
-¿Deseas cerrar sesión?
-      </p>
+      <p class="m-auto">¿Estás seguro de que deseas cerrar sesión?</p>
       <template #footer>
-        <Button label="Si" icon="pi pi-times" @click="cerrarSesion()" text/>
-        
-        <Button label="No" icon="pi pi-check" @click="visible = false" autofocus />
+        <Button label="Sí" icon="pi pi-check" @click="logout" />
+        <Button label="No" icon="pi pi-times" @click="hideLogoutDialog" autofocus />
       </template>
     </Dialog>
-    <div>
-      <Button>0/4</Button>
-    </div>
-    <GoogleMap
-      api-key="AIzaSyBhDknILN83Fc8eLama7Wr0ihN6nQUU-Aw"
-      style="width: 100%; height: 500px"
-      :center="center"
-      :zoom="7.4"
-    >
-      <Marker v-for="(location, i) in locations" :options="{ position: location }" :key="i" />
-    </GoogleMap>
-    <div>
-      <Button @click="ubicacion()">Verificar ubicación</Button>
-    </div>
+    <button>{{ contador }}</button>
   </body>
 </template>
+
+
