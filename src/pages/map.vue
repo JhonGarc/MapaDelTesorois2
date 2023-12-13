@@ -144,7 +144,8 @@ function ubicacion() {
     localStorage.setItem('currentRiddle', JSON.stringify(riddle))
     locations.value = puntosF.value.map(item => ({ lat: parseFloat(item.latitud), lng: parseFloat(item.longitud) }));
 
-    console.log("hola" , contador.value);
+    router.push('acertijo')
+
   } else {
     alert('Todavia no has llegado a tu destino')
   }
