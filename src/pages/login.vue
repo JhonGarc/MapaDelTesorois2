@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useRouter } from 'vue-router'
-import Hcaptcha from '@hcaptcha/vue3-hcaptcha';
+// Importa Hcaptcha solo si decides usarlo
+// import Hcaptcha from '@hcaptcha/vue3-hcaptcha';
 import { onMounted } from 'vue'
 
 const auth = getAuth()
@@ -16,20 +17,12 @@ const formDataRegister = ref<{
   password: '',
 })
 
-const hcaptchaRef = ref<Hcaptcha | null>(null);
+// const hcaptchaRef = ref<Hcaptcha | null>(null);
 
 function login() {
-  // Verifica reCAPTCHA antes de intentar login
-  if (hcaptchaRef.value) {
-    hcaptchaRef.value.execute();
-  }
-}
+  // Comentario: Puedes incluir aquí alguna lógica de seguridad si decides no usar hCaptcha
 
-function onCaptchaVerified(response: string) {
-  // Callback function para verificacion hCaptcha
-  console.log('hCaptcha verified:', response);
-
-  // Continua el proceso de login 
+  // Continua el proceso de login
   signInWithEmailAndPassword(auth, formDataRegister.value.email, formDataRegister.value.password)
     .then((userCredential) => {
       const user = userCredential.user;
@@ -43,31 +36,20 @@ function onCaptchaVerified(response: string) {
       console.log(errorMessage);
       console.log(errorCode);
       alert('Incorrect credentials');
-    })
-    .finally(() => {
-      // Resetea hcaptchaRef despues del login (successful or not)
-      if (hcaptchaRef.value) {
-        hcaptchaRef.value.reset();
-      }
     });
-}
-
-function onCaptchaExpired() {
-  // Maneja el caso cuando captcha expire
-  console.log('Captcha expired');
 }
 
 onMounted(() => {
   // Cargar el script de hCaptcha después de que el componente se monte
-  const script = document.createElement('script');
-  script.src = 'https://js.hcaptcha.com/1/api.js';
-  script.async = true;
-  script.defer = true;
-  document.head.appendChild(script);
+  // Comentario: Puedes omitir esta parte si decides no usar hCaptcha
+  // const script = document.createElement('script');
+  // script.src = 'https://js.hcaptcha.com/1/api.js';
+  // script.async = true;
+  // script.defer = true;
+  // document.head.appendChild(script);
 });
-
-
 </script>
+
 
 <template>
   <body
@@ -101,12 +83,6 @@ onMounted(() => {
           />
         </div>
       </div>
-      <Hcaptcha
-        :sitekey="'ba535a20-0a9a-4ddb-a764-b2f2593e65ea'"
-        @verified="onCaptchaVerified"
-        @expired="onCaptchaExpired"
-        ref="hcaptchaRef"
-      />
       <div>
         <button @click="login" class="bg-[#ccba8d] w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 rounded-lg text-3xl text-black">
           {{ $t('Jugar') }}
