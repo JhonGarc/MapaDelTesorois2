@@ -89,7 +89,7 @@ const verificarPalabra = () => {
        {{ riddle.pista }}
     </p>
 </Dialog>
-      <div class="bg-[#585858] p-4 rounded-xl">
+      <aside class="bg-[#585858] p-4 rounded-xl">
         <p class="text-white text-lg mb-2">¡Puedes visitar estos lugares!</p>
         <div class="card my-2 mx-2">
           <Galleria
@@ -103,7 +103,7 @@ const verificarPalabra = () => {
             </template>
           </Galleria>
         </div>
-      </div>
+      </aside>
     </div>
   </div>
 </template> 

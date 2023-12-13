@@ -82,8 +82,8 @@ const center = computed(() => {
 function ubicacion() {
   const ubicacioness = [
     { nombre: 'punto 1', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' , pista:'' },
-    { nombre: 'punto 2', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '', pista:''},
-    { nombre: 'punto 3', latitud: '4.124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' , pista:''},
+    { nombre: 'punto 2', latitud: '4.1321312324108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '', pista:''},
+    { nombre: 'punto 3', latitud: '4.312312124108489012096', longitud: '-73.6215742713069', acertijo: '', clave: '' , pista:''},
     {
       nombre: puntosF.value[0]?.nombre?.toString(),
       latitud: puntosF.value[0]?.latitud?.toString(),
@@ -139,7 +139,7 @@ function ubicacion() {
     // // Actualizar locations después de eliminar el punto
     
     
-    router.push({ name: 'acertijo' })
+   
     //console.log(ubicacioness[punto].acertijo);
     localStorage.setItem('currentRiddle', JSON.stringify(riddle))
     locations.value = puntosF.value.map(item => ({ lat: parseFloat(item.latitud), lng: parseFloat(item.longitud) }));
